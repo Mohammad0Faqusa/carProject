@@ -1,87 +1,113 @@
-
-
-char usman;
-void setup() 
-{
-pinMode(2,OUTPUT) ; 
-pinMode(3,OUTPUT) ; //enable for motor(F and B)
-pinMode(4,OUTPUT); //backward
-pinMode(5,OUTPUT); //forward 
-pinMode(6,OUTPUT);  //right
-pinMode(7,OUTPUT); //left
-pinMode(8 ,OUTPUT) ;
-   
-
-Serial.begin(9600);
+// Define the pins for motor control
+const int motor1Pin1 = 4;  // Motor 1 terminal 1 (forward , backward) 
+const int motor1Pin2 = 5;  // Motor 1 terminal 2 (forward , backward) 
+const int motor2Pin1 = 6;  // Motor 2 terminal 1 (left , right) 
+const int motor2Pin2 = 7;  // Motor 2 terminal 2 (left , right) 
+const int enable1 = 9 ;//  enable motor (forward , backward) 
+const int enable2 = 3 ;// enable motor (left , right) 
+int pwm // speed limit for enable 1   ; 
+void setup() {
+  // Set motor control pins as outputs
+  pinMode(motor1Pin1, OUTPUT);
+  pinMode(motor1Pin2, OUTPUT);
+  pinMode(motor2Pin1, OUTPUT);
+  pinMode(motor2Pin2, OUTPUT);
+  pinMode(enable1 , OUTPUT) ; 
+  pinMode(enable2, OUTPUT) ; 
+  
+  // Initialize Serial communication
+  Serial.begin(9600);
 }
-void loop() 
-{
-  digitalWrite(2,HIGH);
-  digitalWrite(3,HIGH);
 
-if(Serial.available())
-{
-  usman = Serial.read();
-  Serial.println(usman);
+void loop() {
+  digitalWrite(enable1, HIGH) ; 
+  digitalWrite(enable2, HIGH) ; 
+  if (Serial.available() > 0) {
+    char command = Serial.read();
+    executeCommand(command);
+  }
+}
+
+void executeCommand(char command) {
+  switch (command) {
+    case '0' : 
+      pwm = 0 ; 
+    case '1' :
+      pwm = 25.5 ; 
+    case '2' : 
+      pwm = 51 ;
+    case '3' :
+      pwm = 76.5 ; 
+    case '4' : 
+      pwm = 102 ;
+    case '5' :
+      pwm = 127.5 ; 
+    case '6' : 
+      pwm = 153 ;
+    case '7' :
+      pwm = 178.5 ; 
+    case '8' : 
+      pwm = 204 ;
+    case '9' : 
+      pwm = 229.5 ;
+    case 'q' : 
+      pwm = 255 ; 
   
-  
-switch (usman)
-{
-	case 'B':
-	digitalWrite(5,HIGH);
-	digitalWrite(4,LOW); 
-  
-	break;
     case 'F':
-	digitalWrite(4,HIGH);
-  digitalWrite(5,LOW);  
-	break;
-    case 'R':             //turn Right
-    digitalWrite(7,HIGH);
-    digitalWrite(6,LOW);
-    break;
-    case 'L':             //turn Left
-    digitalWrite(6,HIGH);
-    digitalWrite(7,LOW);
-    
-    break;
-    case 'S':             // stop 
-    digitalWrite(4,LOW);
-    digitalWrite(5,LOW);
-    digitalWrite(6,LOW);
-    digitalWrite(7,LOW);
-    break;
-  case 'D':               // stop all 
-    digitalWrite(4,LOW);
-    digitalWrite(5,LOW);
-    digitalWrite(6,LOW);
-    digitalWrite(7,LOW);
-    break;
-    case 'G' :
-    digitalWrite(4,LOW);
-    digitalWrite(6,LOW);
-    digitalWrite(5,HIGH);
-    digitalWrite(7,HIGH);
-    break; 
-    case 'I' :
-    digitalWrite(4,LOW);
-    digitalWrite(6,HIGH);
-    digitalWrite(5,HIGH);
-    digitalWrite(7,LOW);
-    break; 
-    case 'H' :
-    digitalWrite(4,HIGH);
-    digitalWrite(6,LOW);
-    digitalWrite(5,LOW);
-    digitalWrite(7,HIGH);
-    break;
-    case 'J' :
-    digitalWrite(4,HIGH);
-    digitalWrite(6,HIGH);
-    digitalWrite(5,LOW);
-    digitalWrite(7,LOW);
-    break;  
-    
+      forward();
+      break;
+    case 'B':
+      backward();
+      break;
+    case 'R':
+      right();
+      break;
+    case 'L':
+      left();
+      break;
+    case 'S':
+      stop();
+      break;
+    default:
+      // Invalid command received
+      Serial.println("Invalid command!");
+  }
 }
+
+void forward() {
+  digitalWrite(motor1Pin1, HIGH);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, LOW);
+  analogWrite(enable1 , pwm) ; 
 }
+
+void backward() {
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, LOW);
+  analogWrite(enable1 , pwm) ; 
+
+}
+
+void right() {
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, HIGH);
+}
+
+void left() {
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
+}
+
+void stop() {
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, LOW);
 }
