@@ -1,0 +1,87 @@
+
+
+char usman;
+void setup() 
+{
+pinMode(2,OUTPUT) ; 
+pinMode(3,OUTPUT) ; //enable for motor(F and B)
+pinMode(4,OUTPUT); //backward
+pinMode(5,OUTPUT); //forward 
+pinMode(6,OUTPUT);  //right
+pinMode(7,OUTPUT); //left
+pinMode(8 ,OUTPUT) ;
+   
+
+Serial.begin(9600);
+}
+void loop() 
+{
+  digitalWrite(2,HIGH);
+  digitalWrite(3,HIGH);
+
+if(Serial.available())
+{
+  usman = Serial.read();
+  Serial.println(usman);
+  
+  
+switch (usman)
+{
+	case 'B':
+	digitalWrite(5,HIGH);
+	digitalWrite(4,LOW); 
+  
+	break;
+    case 'F':
+	digitalWrite(4,HIGH);
+  digitalWrite(5,LOW);  
+	break;
+    case 'R':             //turn Right
+    digitalWrite(7,HIGH);
+    digitalWrite(6,LOW);
+    break;
+    case 'L':             //turn Left
+    digitalWrite(6,HIGH);
+    digitalWrite(7,LOW);
+    
+    break;
+    case 'S':             // stop 
+    digitalWrite(4,LOW);
+    digitalWrite(5,LOW);
+    digitalWrite(6,LOW);
+    digitalWrite(7,LOW);
+    break;
+  case 'D':               // stop all 
+    digitalWrite(4,LOW);
+    digitalWrite(5,LOW);
+    digitalWrite(6,LOW);
+    digitalWrite(7,LOW);
+    break;
+    case 'G' :
+    digitalWrite(4,LOW);
+    digitalWrite(6,LOW);
+    digitalWrite(5,HIGH);
+    digitalWrite(7,HIGH);
+    break; 
+    case 'I' :
+    digitalWrite(4,LOW);
+    digitalWrite(6,HIGH);
+    digitalWrite(5,HIGH);
+    digitalWrite(7,LOW);
+    break; 
+    case 'H' :
+    digitalWrite(4,HIGH);
+    digitalWrite(6,LOW);
+    digitalWrite(5,LOW);
+    digitalWrite(7,HIGH);
+    break;
+    case 'J' :
+    digitalWrite(4,HIGH);
+    digitalWrite(6,HIGH);
+    digitalWrite(5,LOW);
+    digitalWrite(7,LOW);
+    break;  
+    
+}
+}
+}
