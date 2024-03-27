@@ -1,11 +1,11 @@
 // Define the pins for motor control
-const int motor1Pin1 = 4;  // Motor 1 terminal 1 (forward , backward) 
-const int motor1Pin2 = 5;  // Motor 1 terminal 2 (forward , backward) 
-const int motor2Pin1 = 6;  // Motor 2 terminal 1 (left , right) 
-const int motor2Pin2 = 7;  // Motor 2 terminal 2 (left , right) 
-const int enable1 = 9 ;//  enable motor (forward , backward) 
-const int enable2 = 3 ;// enable motor (left , right) 
-int pwm // speed limit for enable 1   ; 
+const int motor1Pin1 = 4;  // Motor 1 terminal 1
+const int motor1Pin2 = 5;  // Motor 1 terminal 2
+const int motor2Pin1 = 6;  // Motor 2 terminal 1
+const int motor2Pin2 = 7;  // Motor 2 terminal 2
+const int enable1 = 9 ; 
+const int enable2 = 3 ; 
+int pwm  ; 
 void setup() {
   // Set motor control pins as outputs
   pinMode(motor1Pin1, OUTPUT);
@@ -68,6 +68,20 @@ void executeCommand(char command) {
     case 'S':
       stop();
       break;
+    case 'G' : 
+      forwardLeft() ; 
+      break; 
+    case 'I' : 
+      forwardRight() ; 
+      break ; 
+    case 'H' : 
+      backLeft() ; 
+      break ; 
+    case 'J' : 
+      backRight() ; 
+      break ; 
+     
+     
     default:
       // Invalid command received
       Serial.println("Invalid command!");
@@ -105,6 +119,35 @@ void left() {
   digitalWrite(motor2Pin2, LOW);
 }
 
+void forwardLeft() { 
+  digitalWrite(motor1Pin1, HIGH);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
+  analogWrite(enable1 , pwm) ; 
+}
+
+void forwardRight() { 
+  digitalWrite(motor1Pin1, HIGH);
+  digitalWrite(motor1Pin2, LOW);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, HIGH);
+  analogWrite(enable1 , pwm) ; 
+}
+void backLeft() { 
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin1, HIGH);
+  digitalWrite(motor2Pin2, LOW);
+  analogWrite(enable1 , pwm) ; 
+}
+void backRight() { 
+  digitalWrite(motor1Pin1, LOW);
+  digitalWrite(motor1Pin2, HIGH);
+  digitalWrite(motor2Pin1, LOW);
+  digitalWrite(motor2Pin2, HIGH);
+  analogWrite(enable1 , pwm) ; 
+}
 void stop() {
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, LOW);
