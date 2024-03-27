@@ -40,8 +40,7 @@ void executeCommand(char command) {
       if (previousCharacter == 'B') {
         pwm = 0 ;
       }
-      if (pwm < 250) {
-      pwm = pwm + 5 ; }
+      increaseSpeed();
       previousCharacter = 'F';
       break;
       
@@ -50,8 +49,7 @@ void executeCommand(char command) {
       if (previousCharacter == 'F') {
         pwm = 0 ;
       }
-      if (pwm < 250) {
-      pwm = pwm + 5 ; } 
+      increaseSpeed();
       previousCharacter = 'B';
       break;
       
@@ -73,8 +71,7 @@ void executeCommand(char command) {
       if (previousCharacter == 'B') {
         pwm = 0 ;
       }
-      if (pwm < 250) {
-      pwm = pwm + 5 ; } 
+      increaseSpeed();
       previousCharacter = 'F';
       break; 
       
@@ -83,8 +80,7 @@ void executeCommand(char command) {
       if (previousCharacter == 'B') {
         pwm = 0 ;
       }
-      if (pwm < 250) {
-      pwm = pwm + 5 ; }
+      increaseSpeed();
       previousCharacter = 'F';
       break ; 
       
@@ -93,8 +89,7 @@ void executeCommand(char command) {
         pwm = 0 ;
       }
       backLeft() ; 
-      if (pwm < 250) {
-      pwm = pwm + 5 ; } 
+      increaseSpeed();
       previousCharacter = 'B';
       break ; 
       
@@ -103,8 +98,7 @@ void executeCommand(char command) {
         pwm = 0 ;
       }
       backRight() ; 
-      if (pwm < 250) {
-      pwm = pwm + 5 ; }
+      increaseSpeed();
       previousCharacter = 'B';
       break ; 
      
@@ -180,4 +174,11 @@ void stop() {
   digitalWrite(motor1Pin2, LOW);
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, LOW);
+}
+
+void increaseSpeed() {
+  if (pwm < 255) {
+    pwm = pwm + 3 ; 
+  }
+  
 }
